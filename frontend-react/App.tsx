@@ -65,4 +65,30 @@ const App = () => {
   );
 };
 
+// vulnerable.js
+
+// 1. DOM-based XSS Vulnerability
+document.getElementById("submitBtn").addEventListener("click", function () {
+    const userInput = document.getElementById("userInput").value;
+    document.getElementById("output").innerHTML = "<p>" + userInput + "</p>"; // XSS Risk
+});
+
+// 2. Insecure eval() usage - can lead to RCE
+document.getElementById("executeBtn").addEventListener("click", function () {
+    const codeInput = document.getElementById("codeInput").value;
+    eval(codeInput); // Dangerous: Arbitrary JavaScript Execution
+});
+
+// 3. Hardcoded API Key (Information Exposure)
+const apiKey = "1234567890-abcdefg"; // This should never be hardcoded in front-end code
+
+// 4. Open Redirect
+document.getElementById("redirectBtn").addEventListener("click", function () {
+    const url = new URLSearchParams(window.location.search).get("redirect");
+    if (url) {
+        window.location.href = url; // Dangerous: Allows attackers to redirect users to phishing sites
+    }
+});
+
+
 export default App;
